@@ -1,0 +1,79 @@
+﻿@model Blogger.Models.BlogPostViewModel
+@{Layout = "../Shared/_Layout.cshtml";
+}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h2>Edit Blog Post</h2>
+    </div>
+
+    <form asp-controller="Home" asp-action="ModifyBlogPost">
+        <div class="row">s
+            <div class="col-md-6">
+
+                <input type="hidden" value="@Model.Post.BlogPostId" name="BlogPostId" />
+
+                <div class="form-group">
+                    <label for="Title">Title</label>
+                    <input class="form-control" asp-for="Post.Title" />
+                </div>
+
+                <div class="form-group">
+                    <label for="ShortDescription">
+                        Description
+                    </label>
+
+                    <input class="form-control" asp-for="Post.ShortDescription" />
+                </div>
+
+                <br />
+                <div class="form-group">
+                    <label for="Content">Content</label>
+                    <textarea class="form-control" asp-for="Post.Content" rows="3"></textarea>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="Year">Posted</label>
+                    <input class="form-control" asp-for="Post.Posted" />
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" asp-for="Post.isAvailable" >Available</label>
+                </div>
+
+                <input type="submit" value="Submit" class="btn btn-primary btn-sm"/>
+            </div>
+        </div>
+            <div class="col-md-6">
+                </div>
+
+    </form>
+
+</div>
+<div class="container">
+
+    @if (Model.Photos.Count() == 0)
+    {
+        <p>No images for this post</p>
+    }
+    else
+    {
+        <table>
+            @foreach (var photo in Model.Photos)
+                {
+                <tr>
+
+                    <td style="vertical-align: top">
+                        <div style="float:left;width:100%">
+                            <img src="@photo.Url" class="img-responsive img-rounded" style="width:204px;height:200px;">
+                            <a class="btn btn-danger btn-sm" asp-controller="Home" asp-action="DeleteImageNow" asp-route-id="@photo.PhotoId">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+</div>
+
+

@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+
+<html>
+<head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] Blogger</title>
+
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    </head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Blogger</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("Login", "Login", "Home")</li>
+                <li>@Html.ActionLink("Register", "Register", "Home")</li>
+@if (@Context.Session.GetInt32("RoleId").HasValue)
+{
+                <li>@Html.ActionLink("Add Blog Post", "AddBlogPost", "Home")</li>
+                <li>@Html.ActionLink("Edit Profile", "EditProfile", "Home", new { id = @Context.Session.GetInt32("UserId") })</li>
+
+}
+
+                @if (@Context.Session.GetInt32("RoleId") == 1)
+                {
+                    <li>@Html.ActionLink("View Bad Words", "ViewBadWords", "Home")</li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        @if (@Context.Session.GetString("FirstName") != null)
+    {
+        <div class="well">
+         <h3>   Welcome @Context.Session.GetString("FirstName") @Context.Session.GetString("LastName")!</h3>
+        </div>
+    }
+
+    <div>
+        @RenderBody()
+    </div>
+        
+     
+
+</div>
+
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Greg McLeod 2018</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+</body>
+
+</html>

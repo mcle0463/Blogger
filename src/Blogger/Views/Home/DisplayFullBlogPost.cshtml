@@ -1,0 +1,98 @@
+﻿@model Blogger.Models.BlogPostViewModel
+
+@using Microsoft.AspNetCore.Http
+@{Layout = "../Shared/_Layout.cshtml";
+}
+
+<div class="container" role="main">
+    <div class="page-header">
+        <h2>Blog Post</h2>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">@Model.Post.Title</div>
+        <div class="panel-body">
+            @Model.Post.Content
+            <br>
+            <hr>
+            <div class="container">
+
+                @if ( Model.Photos.Count() == 0)
+                {
+                    <p>No images for this post</p>
+                }
+                else
+                {
+                    <table>
+                        @foreach (var photo in Model.Photos)
+                        {
+                            <tr>
+                        
+                                <td style="vertical-align: top">
+                                    <div style="float:left;width:100%">
+                                        <img src="@photo.Url" class="img-responsive img-rounded"  style="width:204px;height:200px;">
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        </table>
+                }
+
+                 
+
+
+                </div>
+                <br>
+                    <hr>
+                    Posted on @Model.Post.Posted by @Model.User.FirstName @Model.User.LastName (@Model.User.EmailAddress)
+    </div>
+
+        @if (Model.Comments.Count == 0)
+        {
+            <div class="container">
+
+                <h4>No comments to display</h4>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.Comments)
+            {                    <div class="container">
+
+            <div class="panel panel-default " style="max-width: 80%;">
+                <div class="panel-body">@item.Content</div>
+            </div>
+        </div>
+
+            }
+
+        }
+                    @if (Context.Session.GetInt32("UserId").HasValue)
+                    {
+                        <div class="container">
+
+                                <form asp-controller="Home" asp-action="CreateComment">
+
+                                    <label for="Content">Comment:</label>
+                                    <textarea class="form-control" rows="5" cols="50" name="Content" style="max-width: 70%;"></textarea>
+
+                                    <input type="hidden" class="form-control" value=@Model.Post.BlogPostId name="BlogPostId" />
+                                    <input type="hidden" class="form-control" value=@Context.Session.GetInt32("UserId") name="UserId" />
+
+                                    <br />
+                                    <input type="submit" value="Submit" class="btn btn-primary btn-sm"/>
+                                </form>
+                            </div>
+                    }
+                </div>
+            </div>
+
+
+
+
+            <!--a. This view will list the Title, the Content, the Posted value, the email address and full name of the users who created the post.
+
+            b. If the user is logged in they should be able to comment on the blog post using a comments text box at the bottom of the screen.
+
+            c. Display all comments associated with the blog post.
+            -->
